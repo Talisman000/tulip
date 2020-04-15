@@ -1,0 +1,77 @@
+@startuml a
+package Player{
+    class PlayerMover<<MonoBehaviour>>{
+
+    }
+    class PlayerActionHandler<<MonoBehaviour>>{
+        +Seed(Vector2 pos)
+        +Water()
+        +PickUp(IPickUpAble pickUpAble)
+    }
+    class ChangeCharacterHandler<<MonoBehaviour>>{
+        +IObservable<CharacterInfo> OnCharacterChanged;
+    }
+    class PlayerInput<<MonoBehaviour>>{
+
+    }
+    interface IPlayerInput{
+        +IObservable<bool> OnSeedButtonObservable
+        +IObservable<bool> OnWaterButtonObservable
+        +IObservable<bool> OnPickTulipButtonObservable
+        +ReactiveProperty<Vector2> MoveDirectionReactiveProperty
+    }
+    class PlayerStateController{
+        +HP:float
+        +IObservable<bool> OnCharacterDamaged;
+        +IObservable<bool> OnCharacterDead;
+    }
+    class CharacterInfo{
+        +recoverHP :float
+        +bullet :Bullet
+        +water :Water
+        +seedInstancePosList : List<Vector2>
+    }
+    PlayerActionHandler --> ChangeCharacterHandler
+    ChangeCharacterHandler --> CharacterInfo
+    PlayerInput --|> IPlayerInput
+    PlayerMover --> IPlayerInput
+    PlayerActionHandler --> IPlayerInput
+
+}
+
+class Water{
+
+}
+package Tulip{
+    interface IPickUpAble{
+
+    }
+    interface IWaterAble{
+
+    }
+    PlayerActionHandler ---> IPickUpAble
+}
+
+package Bullet{
+    interface IShootAble{
+        +Shoot()
+    }
+    PlayerActionHandler --> IShootAble
+    class Bullet{
+
+    }
+    Bullet --|> IShootAble
+}
+package Enemy{
+    interface IDamageAble{
+        +ApplyDamage(int damage)
+    }
+    class Enemy{
+        -HP : int
+
+    }
+    Bullet --> IDamageAble
+    Enemy --|> IDamageAble
+}
+
+@enduml

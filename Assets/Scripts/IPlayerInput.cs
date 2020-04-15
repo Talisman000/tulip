@@ -5,7 +5,7 @@ using UnityEngine;
 using UniRx;
 public interface IPlayerInput
 {
-    IObservable<bool> OnActionButtonObservable{get;}
-    IObservable<bool> OnChangeButtonObservable{get;}
+    IObservable<bool> OnSeedButtonObservable{get;}
+    IObservable<bool> OnWaterButtonObservable{get;}
     ReactiveProperty<Vector2> MoveDirectionReactiveProperty{ get; set; }
 }

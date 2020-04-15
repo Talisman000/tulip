@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour, IPlayerInput
 {
-    private Subject<bool> OnActionButtonSubject = new Subject<bool>();
-    private Subject<bool> OnChangeButtonSubject = new Subject<bool>();
+    private Subject<bool> OnSeedButtonSubject = new Subject<bool>();
+    private Subject<bool> OnWaterButtonSubject = new Subject<bool>();
 
-    public IObservable<bool> OnActionButtonObservable
+    public IObservable<bool> OnSeedButtonObservable
     {
-        get { return OnActionButtonSubject; }
+        get { return OnSeedButtonSubject; }
     }
 
-    public IObservable<bool> OnChangeButtonObservable
+    public IObservable<bool> OnWaterButtonObservable
     {
-        get { return OnChangeButtonSubject; }
+        get { return OnWaterButtonSubject; }
     }
 
     public ReactiveProperty<Vector2> MoveDirectionReactiveProperty { get; set; } = new ReactiveProperty<Vector2>();
@@ -29,19 +29,19 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
         }
         if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.M))
         {
-            OnActionButtonSubject.OnNext(true);
+            OnSeedButtonSubject.OnNext(true);
         }
         else
         {
-            OnActionButtonSubject.OnNext(false);
+            OnSeedButtonSubject.OnNext(false);
         }
-        if(Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.Colon))
+        if(Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Semicolon))
         {
-            OnChangeButtonSubject.OnNext(true);
+            OnWaterButtonSubject.OnNext(true);
         }
         else
         {
-            OnChangeButtonSubject.OnNext(false);
+            OnWaterButtonSubject.OnNext(false);
         }
     }
 }
