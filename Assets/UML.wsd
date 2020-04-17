@@ -31,14 +31,19 @@ package Player{
         +water :Water
         +seedInstancePosList : List<Vector2>
     }
-    PlayerActionHandler --> ChangeCharacterHandler
+    PlayerActionHandler ---> ChangeCharacterHandler
     ChangeCharacterHandler --> CharacterInfo
     PlayerInput --|> IPlayerInput
     PlayerMover --> IPlayerInput
     PlayerActionHandler --> IPlayerInput
 
 }
+package Tools{
+    class ToolsController{
 
+    }
+    PlayerActionHandler --> ToolsController
+}
 class Water{
 
 }
@@ -53,10 +58,6 @@ package Tulip{
 }
 
 package Bullet{
-    interface IShootAble{
-        +Shoot()
-    }
-    PlayerActionHandler --> IShootAble
     class Bullet{
 
     }

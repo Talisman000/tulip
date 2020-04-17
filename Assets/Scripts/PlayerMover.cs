@@ -16,6 +16,10 @@ public class PlayerMover : MonoBehaviour
     {
         playerInput = GetComponent<IPlayerInput>();
         Rb2D = GetComponent<Rigidbody2D>();
-        playerInput.MoveDirectionReactiveProperty.Skip(1).Where(x => isMove).Subscribe(x => Rb2D.velocity = x * playerSpeed).AddTo(gameObject);
+        playerInput.MoveDirectionReactiveProperty
+            .Skip(1)
+            .Where(x => isMove)
+            .Subscribe(x => Rb2D.velocity = x * playerSpeed)
+            .AddTo(gameObject);
     }
 }

@@ -5,7 +5,11 @@ using UnityEngine;
 using UniRx;
 public interface IPlayerInput
 {
-    IObservable<bool> OnSeedButtonObservable{get;}
-    IObservable<bool> OnWaterButtonObservable{get;}
-    ReactiveProperty<Vector2> MoveDirectionReactiveProperty{ get; set; }
+    IObservable<bool> OnSeedButtonObservable { get; }
+    IObservable<bool> OnWaterButtonObservable { get; }
+    IObservable<bool> OnWeaponButtonObservable { get; }
+    IObservable<bool> OnChangeButtonObservable { get; }
+
+    ReactiveProperty<Vector2> MoveDirectionReactiveProperty { get; set; }
+    ReactiveProperty<float> MoveAngleReactiveProperty { get; set; }
 }
