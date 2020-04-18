@@ -35,6 +35,7 @@ public class ToolsController : MonoBehaviour
                 weaponCoolTimer = 0;
             }
         }
+        if(!GameManager.isGame.Value) water.Stop();
     }
     public void WaterPlay(bool flag)
     {

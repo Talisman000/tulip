@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: W
   m_EditorClassIdentifier: 
   characterType: 1
-  recoverHP: 4
+  recoverHP: 2
   toolsController: {fileID: 7041649549856020868, guid: 07fb55e844d80974d850e3c89cd84c42,
     type: 3}

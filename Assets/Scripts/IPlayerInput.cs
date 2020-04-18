@@ -9,6 +9,7 @@ public interface IPlayerInput
     IObservable<bool> OnWaterButtonObservable { get; }
     IObservable<bool> OnWeaponButtonObservable { get; }
     IObservable<bool> OnChangeButtonObservable { get; }
+    IObservable<bool> OnStartButtonObservable { get; }
 
     ReactiveProperty<Vector2> MoveDirectionReactiveProperty { get; set; }
     ReactiveProperty<float> MoveAngleReactiveProperty { get; set; }

@@ -52,8 +52,8 @@ public class PlayerActionHandler : MonoBehaviour
 
     private void Weapon()
     {
-        if (toolsController == null) return;
-        toolsController.WeaponAttack(weaponAngle);
+        // if (toolsController == null) return;
+        // toolsController.WeaponAttack(weaponAngle);
     }
 
     private void ChangeCharacter()
@@ -71,6 +71,7 @@ public class PlayerActionHandler : MonoBehaviour
         toolsController = tool;
         Debug.Log(String.Format("Changed -> {0}",tulip.characterInfo.characterType));
         StartCoroutine(tulip.DestroyCoroutine());
+        onCharacterTulip = null;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

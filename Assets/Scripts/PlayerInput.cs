@@ -8,6 +8,8 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
     private Subject<bool> OnWaterButtonSubject = new Subject<bool>();
     private Subject<bool> OnWeaponButtonSubject = new Subject<bool>();
     private Subject<bool> OnChangeButtonSubject = new Subject<bool>();
+    private Subject<bool> OnStartButtonSubject = new Subject<bool>();
+
 
 
     public IObservable<bool> OnSeedButtonObservable
@@ -26,12 +28,20 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
     {
         get { return OnChangeButtonSubject; }
     }
+    public IObservable<bool> OnStartButtonObservable
+    {
+        get { return OnStartButtonSubject; }
+    }
 
     public ReactiveProperty<Vector2> MoveDirectionReactiveProperty { get; set; } = new ReactiveProperty<Vector2>();
     public ReactiveProperty<float> MoveAngleReactiveProperty { get; set; } = new ReactiveProperty<float>();
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space)){
+            OnStartButtonSubject.OnNext(true);
+        }
+        if (!GameManager.isGame.Value) return;
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             float moveX = Input.GetAxis("Horizontal");
@@ -48,7 +58,7 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
         {
             MoveDirectionReactiveProperty.Value = Vector2.zero;
         }
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Colon))
         {
             OnSeedButtonSubject.OnNext(true);
         }
@@ -56,11 +66,11 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
         {
             OnSeedButtonSubject.OnNext(false);
         }
-        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Semicolon))
+        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Slash))
         {
             OnWaterButtonSubject.OnNext(true);
         }
-        else if (Input.GetKeyUp(KeyCode.X) || Input.GetKeyUp(KeyCode.Semicolon))
+        else if (Input.GetKeyUp(KeyCode.X) || Input.GetKeyUp(KeyCode.Slash))
         {
             OnWaterButtonSubject.OnNext(false);
         }
@@ -72,7 +82,7 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
         {
             OnWeaponButtonSubject.OnNext(false);
         }
-        if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.Colon))
+        if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.Backslash))
         {
             OnChangeButtonSubject.OnNext(true);
         }
@@ -81,4 +91,10 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
             OnChangeButtonSubject.OnNext(false);
         }
     }
+#if UNITY_EDITOR
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(0, 30, 200, 60), string.Format("Direction:{0}\nAngle:{1}", MoveDirectionReactiveProperty.Value, MoveAngleReactiveProperty.Value));
+    }
+#endif
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: R
   m_EditorClassIdentifier: 
   characterType: 0
-  recoverHP: 8
+  recoverHP: 6
   toolsController: {fileID: 7041649549856020868, guid: 276e0e5626d4cfd4293f9f19feb66479,
     type: 3}

@@ -10,16 +10,35 @@ public class PlayerMover : MonoBehaviour
     IPlayerInput playerInput;
     Rigidbody2D Rb2D;
     [SerializeField] float playerSpeed;
-    [SerializeField] bool isMove = true;
+    public ReactiveProperty<bool> isMove = new ReactiveProperty<bool>();
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         playerInput = GetComponent<IPlayerInput>();
         Rb2D = GetComponent<Rigidbody2D>();
         playerInput.MoveDirectionReactiveProperty
             .Skip(1)
-            .Where(x => isMove)
-            .Subscribe(x => Rb2D.velocity = x * playerSpeed)
+            .Subscribe(x => Move(x))
             .AddTo(gameObject);
+    }
+    private void Update()
+    {
+        if (!GameManager.isGame.Value)
+        {
+            Rb2D.velocity = Vector2.zero;
+        }
+    }
+    void Move(Vector2 direction)
+    {
+
+        if (direction != Vector2.zero)
+        {
+            isMove.Value = true;
+        }
+        else
+        {
+            isMove.Value = false;
+        }
+        Rb2D.velocity = direction * playerSpeed;
     }
 }
