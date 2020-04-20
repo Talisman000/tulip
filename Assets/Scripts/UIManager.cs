@@ -25,6 +25,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI detailTulip;
 
     [SerializeField] float duration;
+    [SerializeField] int resultBaibaiTime = 60;
+    int resultBaibaiTimer = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +47,13 @@ public class UIManager : MonoBehaviour
         result.DOLocalMoveX(600, 0);
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        Timebar.value = GameManager.gameTimer / GameManager.maxGameTimer;
+        background.color = fieldgradient.Evaluate(GameManager.gameTimer / GameManager.maxGameTimer);
+        score.text = GameManager.score.ToString();
+    }
     void GameUIEnter(float duration)
     {
         title.DOLocalMoveY(400, duration).SetEase(Ease.InQuad);
@@ -72,13 +81,22 @@ public class UIManager : MonoBehaviour
         totalTulip.text = string.Format("Tulip {0,4:d}", total);
         detailTulip.text = detail;
         result.DOLocalMoveX(300, duration);
+        StartCoroutine(ResultBaibaiCoroutine(duration));
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator ResultBaibaiCoroutine(float duration)
     {
-        Timebar.value = GameManager.gameTimer / GameManager.maxGameTimer;
-        background.color = fieldgradient.Evaluate(GameManager.gameTimer / GameManager.maxGameTimer);
-        score.text = GameManager.score.ToString();
+        resultBaibaiTimer = 0;
+        while (true)
+        {
+            if (resultBaibaiTimer > resultBaibaiTime)
+            {
+                result.DOLocalMoveX(600, duration).SetEase(Ease.InQuad);
+                yield break;
+            }
+            resultBaibaiTimer++;
+
+            yield return new WaitForSeconds(1);
+        }
     }
 }

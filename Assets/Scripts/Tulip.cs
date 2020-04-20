@@ -9,10 +9,14 @@ public class Tulip : MonoBehaviour
     BoxCollider2D boxCollider2D;
     [SerializeField] int points;
     [SerializeField] float addPointsInterval;
+    AudioSource audioSource;
+    [SerializeField] AudioClip popSE;
     private void Start()
     {
         transform.DOPunchScale(Vector2.one * 0.3f, 0.3f, 1);
         GameManager.tulipBloomNumbers[(int)characterInfo.characterType]++;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(popSE);
         StartCoroutine(AddPoints());
     }
 

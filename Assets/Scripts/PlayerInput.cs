@@ -58,7 +58,7 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
         {
             MoveDirectionReactiveProperty.Value = Vector2.zero;
         }
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Colon))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Period))
         {
             OnSeedButtonSubject.OnNext(true);
         }

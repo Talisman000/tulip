@@ -10,12 +10,16 @@ public class PlayerActionHandler : MonoBehaviour
     [SerializeField] ToolsController toolsController;
     GameObject onCharacterTulip;
     private Subject<CharacterInfo> ChangeCharacterSubject = new Subject<CharacterInfo>();
-    public IObservable<CharacterInfo> ChangeCharacterObservable{
-        get {return ChangeCharacterSubject;}
+    public IObservable<CharacterInfo> ChangeCharacterObservable
+    {
+        get { return ChangeCharacterSubject; }
     }
     float weaponAngle = 90;
+    AudioSource audioSource;
+    [SerializeField] AudioClip changeSE;
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         playerInput = GetComponent<IPlayerInput>();
         playerInput.OnSeedButtonObservable
             .Where(flag => flag)
@@ -35,7 +39,7 @@ public class PlayerActionHandler : MonoBehaviour
         playerInput.MoveAngleReactiveProperty
             .Subscribe(angle => weaponAngle = angle)
             .AddTo(gameObject);
-        
+
     }
 
     private void Seed()
@@ -69,7 +73,8 @@ public class PlayerActionHandler : MonoBehaviour
         tool.transform.localPosition = Vector2.zero;
         ChangeCharacterSubject.OnNext(tulip.characterInfo);
         toolsController = tool;
-        Debug.Log(String.Format("Changed -> {0}",tulip.characterInfo.characterType));
+        audioSource.PlayOneShot(changeSE);
+        Debug.Log(String.Format("Changed -> {0}", tulip.characterInfo.characterType));
         StartCoroutine(tulip.DestroyCoroutine());
         onCharacterTulip = null;
     }

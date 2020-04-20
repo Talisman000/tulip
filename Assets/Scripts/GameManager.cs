@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] PlayerInput playerInput;
+    const string HIGH_SCORE = "highScore";
     private const int characterTypeSize = 3;
     public const float maxGameTimer = 180;
     public static float gameTimer;
@@ -16,15 +17,19 @@ public class GameManager : MonoBehaviour
     public static int[] tulipBloomNumbers;
     public static ReactiveProperty<bool> isGame;
     public static ReactiveProperty<bool> isResult;
+    AudioSource audioSource;
+    [SerializeField] AudioClip startSE;
     // Start is called before the first frame update
     void Start()
     {
         gameTimer = maxGameTimer;
         score = 0;
+        highScore = LoadHighScore();
         tulipBloomNumbers = new int[characterTypeSize];
         isGame = new ReactiveProperty<bool>(false);
         isResult = new ReactiveProperty<bool>(false);
         playerInput.OnStartButtonObservable.Subscribe(flag => OnPlayButtonDown()).AddTo(gameObject);
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -39,13 +44,21 @@ public class GameManager : MonoBehaviour
                 isResult.Value = true;
             }
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (isResult.Value)
+            {
+                if (score > highScore) SaveHighScore(score);
+            }
+            SceneTransition.Instance.ChangeScene(SceneManager.GetActiveScene().name);
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isResult.Value)
             {
-                if (score > highScore) highScore = score;
+                if (score > highScore) SaveHighScore(score);
             }
-            SceneTransition.Instance.ChangeScene(SceneManager.GetActiveScene().name);
+            Application.Quit();
         }
     }
 
@@ -53,13 +66,25 @@ public class GameManager : MonoBehaviour
     {
         if (isResult.Value)
         {
-            if (score > highScore) highScore = score;
+            if (score > highScore) SaveHighScore(score);
             SceneTransition.Instance.ChangeScene(SceneManager.GetActiveScene().name);
         }
         else
         {
+            audioSource.PlayOneShot(startSE);
             isGame.Value = true;
         }
+    }
+
+    void SaveHighScore(int highScore)
+    {
+        PlayerPrefs.SetInt(HIGH_SCORE, score);
+        PlayerPrefs.Save();
+    }
+
+    int LoadHighScore()
+    {
+        return PlayerPrefs.GetInt(HIGH_SCORE, 0);
     }
 #if UNITY_EDITOR
     private void OnGUI()

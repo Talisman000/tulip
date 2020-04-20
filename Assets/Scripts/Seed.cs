@@ -7,6 +7,13 @@ public class Seed : MonoBehaviour
     [SerializeField] GameObject tulip;
     [SerializeField] float bloomTime = 20;
     float bloomTimer = 0;
+    AudioSource audioSource;
+    [SerializeField] AudioClip plantSE;
+
+    private void Start() {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(plantSE);
+    }
     private void Update()
     {
         bloomTimer += Time.deltaTime;
